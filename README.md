@@ -1,5 +1,5 @@
 # Postman Assignment
- Assignment for data engineer role at Postman India,
+ Assignment for data engineer role at Postman India
  
 ## Table of content
 - [Introduction](#introduction)
@@ -15,6 +15,8 @@ The instruction given in the assignment was to build a non-blocking parallel pro
 data from a .csv file, process the data and load to a database table, following which the data from the products
 table needs to be aggregated and further inserted into another table. I have used dockerised **Spark**, with scripts written in 
 pyspark, as my ETL tool and have used Postgres as the target database.  
+
+<img src=./images/image8.png width="700" height="400">
 
 Following were the points to achieve
 - Code should follow the concept of OOPS
@@ -114,6 +116,8 @@ sample 10 rows from products table:
 sample 10 rows from products_agg table:
 
 <img src=./images/image6.png width="700" height="400">
+
+Please navigate to postgres details section to connect to database and query/check data
 
 
 
