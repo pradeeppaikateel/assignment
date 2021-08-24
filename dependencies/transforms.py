@@ -108,8 +108,7 @@ class Transform:
             df.repartition(100)
             spark = self.__get_spark()
             df.createOrReplaceTempView("products_table")
-            df1 = spark.sql("select name, count(*) as count_of_names from products_table group by name")
-            agg_df = self.dfzipwithuniqueid(df=df1, offset=offset)
+            agg_df = spark.sql("select name, count(*) as count_of_names from products_table group by name")
 
         except Exception as err:
             print("\nError in aggregation")

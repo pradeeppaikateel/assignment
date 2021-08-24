@@ -2,18 +2,23 @@
  Assignment for data engineer role at Postman India,
  
 ##Table of content
-
+- [Introduction](#introduction)
+- [Folder Structure](#folder-structure)
+- [Steps to run the code](#steps-to-run-the-code)
+    - [Requirements](#requirements)
+- [Framework Functionality](#framework-functionality)
+- [Postgres Details](#postgres-details)
 
 ## Introduction
 The instruction given in the assignment was to build a non-blocking parallel processing ETL pipeline that would ingest
 data from a .csv file, process the data and load to a database table, following which the the data from the products
-table needs to be aggregated and further inserted into another table. I have used **spark**, with scripts written in 
-pyspark, as my ETL tool and have used PostGres as the target database.  
+table needs to be aggregated and further inserted into another table. I have used dockerised **Spark**, with scripts written in 
+pyspark, as my ETL tool and have used Postgres as the target database.  
 
 Following were the points to achieve
 - Code should follow concept of OOPS
 - Support for regular non-blocking parallel ingestion of the given file into a table. Consider thinking about the scale 
-  of what should happen if the file is to be processed in 2 mins.
+  of what should happen if the file is to be processed in 2 minutes.
 - Support for updating existing products in the table based on `sku` as the primary key.
 - All product details are to be ingested into a single table
 - An aggregated table on above rows with `name` and `no. of products` as the columns
@@ -29,26 +34,44 @@ target table treating `sku` like a primary key i.e only one record of a `sku` va
   
 ##Folder Structure
 A typical top-level directory layout
+```
+root/
+ |-- configs/
+ |   |-- PRODUCTS.yaml
+ |-- dependencies/
+ |   |-- data_check.py
+ |   |-- env_config_parser.py
+ |   |-- extract.py
+ |   |-- load.py
+ |   |-- log.py
+ |   |-- postgresql.py
+ |   |-- table_config_parser.py
+ |   |-- transforms.py
+ |   |-- utils.py
+ |-- jobs/
+ |   |-- etl_job.py
+ |-- source_data/
+ |   |-- products.csv
+ |   code.zip
+ |   new.bat
+ |   Dockerfile
+ |   Dockerfile2
+ |   requirements.txt
+ |   servers.json
+ 
+```
 
-    .
-    ├── configs                 # config files
-    ├── dependencies            # shared dependency libraries
-    ├── jobs                    # contains the main pyspark ETL script/job
-    ├── source_data             # contains the products.csv file
-    ├── code.zip                # zip of dependencies folder
-    ├── images                  # images for README.md
-    ├── LICENSE           
-    └── README.md
+The main Python module containing the ETL job (which will be sent to the Spark cluster), is `jobs/etl_job.py`. Any external configuration parameters required by etl_job.py are stored in yaml format in `configs/PRODUCTS.yaml` . Additional modules that support this job are kept in the dependencies' folder. In the project's root I have included new.bat, which is a batch script to build the docker images. Requirements.txt file contains all the additional modules thats needed by pyspark like `psycopg2` and `PyYAML`
+
 
 ## Steps to run the code
 There are three containers in total that host the whole framework on docker. Each for spark, postgresql and pgadmin4.
-###Requirements: 
+###Requirements 
 - Docker
 - Docker Compose
 - Git
 
 1. Clone the code base from this github repo using command
-
 
   ```
   git clone https://github.com/pradeeppaikateel/postman-assignment.git 
@@ -57,7 +80,7 @@ There are three containers in total that host the whole framework on docker. Eac
 ```
 cd postman-assignment
 ```
-**NOTE: All commands in cmd/terminal are to be run from this directory**
+**NOTE: All commands in cmd/terminal are to be run from above directory**
 
 As this framework is built in a windows machine, I have created a batch file that would execute all initial commands.
 
@@ -78,16 +101,25 @@ docker run -p 5050:80 --volume=pgadmin4:/var/lib/pgadmin -e PGADMIN_DEFAULT_EMAI
 ```
 docker exec spark-master spark-submit --master spark://spark:7077 --py-files /opt/bitnami/spark/postman-assignment/code.zip /opt/bitnami/spark/postman-assignment/jobs/etl_job.py --source=PRODUCTS --env=dev --job_run_date=2021-08-07T02:00:00+00:00
 ```
-On execution of the above job, the products and products_agg tale will have following count of records:
+On execution of the above job, the products and products_agg table will have following count of records:
 ```
 count of records in products: 466693
-count of records in products_agg: 
+count of records in products_agg: 212645
 ```
+sample 10 rows from products table:
+
+<img src=./images/image5.png width="600" height="400">
+
+sample 10 rows from products_agg table:
+
+<img src=./images/image6.png width="600" height="400">
+
+
 
 ## Framework Functionality
 This spark framework offers the following functionality which covers all the 'points to achieve' as following:
 - The framework has been created following OOPS concept and every process is set up as an object like Extract, Transform, Load etc, where each object has its own methods.
-- the data is repartitioned to a number of 200, which would ensure that non-blocking parallel procession ensures even as the cluster resources scale up.
+- the data is repartitioned to a number of 100, which would ensure that non-blocking parallel procession ensures even as the cluster resources scale up.
 - Loading of data into the target table happens using the Upsert functionality treating `sku` as the conflict key, wherein if a record with said `sku` does not exist then it is inserted into target table, and if it does then the other columns are updated.
 - All product details are ingested to a single table called as products in database postman.
 - An aggregate ETL process is also run wherein the data is taken from the products table , aggregated and inserted into products_agg table of database postman
@@ -117,7 +149,7 @@ Two tables are created/used , the `products` table and `products_agg` table
 
 products table:
 ```
-CREATE TABLE IF NOT EXISTS public.products( 
+CREATE TABLE IF NOT EXISTS postman.public.products( 
 p_id bigint primary key,
 sku varchar(70) unique not null,
 name varchar(70) not null,
@@ -129,20 +161,18 @@ updt_tmstmp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ```
 drop script
 ```
-DROP TABLE public.products;
+DROP TABLE postman.public.products;
 ```
 products_agg table:
 ```
-CREATE TABLE IF NOT EXISTS products_agg( 
-p_id bigint primary key,
-name varchar(70) unique not null,
-"no. of products" integer not null,
-updt_tmstmp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS postman.public.products_agg( 
+name varchar(70) primary key,
+"no. of products" integer not null
 ) 
 ```
 drop script
 ```
-DROP TABLE public.products_agg;
+DROP TABLE postman.public.products_agg;
 ```
 Details on how to connect to the Postgres server using pgadmin is given below:
 
@@ -169,3 +199,24 @@ password: postman
 <img src=./images/image1.png width="600" height="400">
 <img src=./images/image3.png width="400" height="400">
 <img src=./images/image4.png width="400" height="400">
+
+4. Once connected, navigate to the postman database as show , right click and choose "query tool"
+
+<img src=./images/image7.png width="400" height="400">
+
+5. The following queries can be used to query processed data:
+
+products table
+```
+SELECT p_id, sku, name, description, request_id, record_checksum, updt_tmstmp FROM postman.public.products;
+```
+products_agg table
+```
+SELECT name, "no. of products" FROM postman.public.products_agg;
+```
+
+## Future work
+If I was given more time, I would have implemented the following in a better manner
+- A more thorough data sanity check class and methods for source data
+- A better error handling framework
+- Would have worked on making the framework more source data agnostic. Due to shortage in time I could not build a generic framework which is what would be ideal, where the framework would be independent of source object and would work for any and all source objects with just change in the parameters of the config file.

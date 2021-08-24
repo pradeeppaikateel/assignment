@@ -1,6 +1,6 @@
 import sys
 import datetime
-from dependencies.utils import parse_job_args, create_spark_session, get_configs
+from dependencies.utils import Utils
 from dependencies.log import SparkLogger
 from dependencies.extract import Extract
 from dependencies.postgresql import PostgreSql
@@ -16,7 +16,8 @@ def main():
     """
     sys.stdout = open("/opt/bitnami/spark/logs/spark.txt", "w")
     print("\n****************************************** STDOUT *********************************************")
-    job_args = parse_job_args(sys.argv[1:])
+    utils = Utils()
+    job_args = utils.parse_job_args(sys.argv[1:])
     app_name = f"{__file__.split('.py')[0]}-{job_args.source}"
 
     spark_logger = SparkLogger(
@@ -25,7 +26,7 @@ def main():
     logger = spark_logger.get_logger()
     logger.info(f"Job Arguments: {job_args}")
 
-    spark = create_spark_session(app_name)
+    spark = utils.create_spark_session(app_name)
     application_id = spark.sparkContext.applicationId
 
     job_run_date_split = job_args.job_run_date.split('-')
@@ -37,12 +38,11 @@ def main():
 
     timestamp = "".join(get_vals)
 
-    env_configs, table_configs = get_configs(job_args)
+    env_configs, table_configs = utils.get_configs(job_args)
 
     source = table_configs.sources[0]
     data_object = source['data_object']
-    target = table_configs.targets[0]
-    dbtable = target['dbtable']
+    dbtable = "products"
 
     source_df = extract_data(
         spark=spark,
@@ -103,19 +103,11 @@ def main():
                                       application_id=application_id,
                                       spark_logger=spark_logger)
 
-    offset = database.query_sql("Select max(p_id) from products_agg")
-    if not offset[0][0]:
-        offset = 0
-    else:
-        offset = offset[0][0]
-
-    offset = int(offset)
-
     aggregated_df = transform_data_agg(spark=spark,
                                        df=extracted_df,
                                        dbtable="products_agg",
                                        data_object="products_agg",
-                                       offset=offset,
+                                       offset=0,
                                        application_id=application_id,
                                        spark_logger=spark_logger)
     if not aggregated_df:
@@ -155,7 +147,6 @@ def extract_data(
 
     source_df = None
     source_count = None
-    temp_view_name = source["temp_view_name"]
     source_type = source["source_type"].lower()
     logger = spark_logger.get_logger()
 
@@ -270,7 +261,6 @@ def load_data(df,
     :param dbtable:
     :param spark_logger: spark logger instance
     :param postgresql: Database connection object
-    :param spark: spark session instance
     :param df: DataFrame to load to database.
     :return: None
     """
@@ -316,7 +306,6 @@ def extract_table_data(
         spark_logger=None):
     """Extract data from source and create dataframe.
         :param spark: instance of spark session
-        :param source: data object name
         :param dbtable: target table name
         :param application_id: spark application id
         :param spark_logger: spark logger instance
@@ -377,7 +366,6 @@ def transform_data_agg(spark,
     :param offset: existing max p_id from database table
     :param application_id: spark application id
     :param spark_logger: spark logger instance
-    :param timestamp: timestamp
     """
     aggregated_df = None
     aggregated_count = 0
@@ -427,7 +415,6 @@ def load_agg_data(df,
     :param dbtable:
     :param spark_logger: spark logger instance
     :param postgresql: Database connection object
-    :param spark: spark session instance
     :param df: DataFrame to load to database.
     :return: None
     """

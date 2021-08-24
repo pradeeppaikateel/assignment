@@ -61,7 +61,7 @@ class PostgreSql:
             if connection:
                 connection.autocommit = True
                 cursor = connection.cursor()
-                sql1 = '''CREATE TABLE IF NOT EXISTS products( 
+                sql1 = '''CREATE TABLE IF NOT EXISTS postman.public.products( 
                         p_id bigint primary key,
                         sku varchar(70) unique not null,
                         name varchar(70) not null,
@@ -72,11 +72,9 @@ class PostgreSql:
                         ) ;'''
                 cursor.execute(sql1)
 
-                sql2 = '''CREATE TABLE IF NOT EXISTS products_agg( 
-                        p_id bigint primary key,
-                        name varchar(70) unique not null,
-                        "no. of products" integer not null,
-                        updt_tmstmp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                sql2 = '''CREATE TABLE IF NOT EXISTS postman.public.products_agg( 
+                        name varchar(70) primary key,
+                        "no. of products" integer not null
                         ) ;'''
                 cursor.execute(sql2)
 
@@ -171,11 +169,11 @@ class PostgreSql:
             cursor = connection.cursor()
 
             for row in partition:
-                sql = f'''INSERT INTO products_agg (p_id, name, "no. of products")
-                VALUES({row.p_id}, '{row.name}',{row.count_of_names}) 
+                sql = f'''INSERT INTO products_agg (name, "no. of products")
+                VALUES('{row.name}',{row.count_of_names}) 
                 ON CONFLICT (name) 
                 DO 
-                UPDATE SET "no. of products" = '{row.count_of_names}', updt_tmstmp = current_timestamp ;'''
+                UPDATE SET "no. of products" = '{row.count_of_names}';'''
                 cursor.execute(sql)
 
             connection.commit()
