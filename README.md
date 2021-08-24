@@ -203,7 +203,7 @@ password: postman
 
 4. Once connected, navigate to the postman database as show , right click and choose "query tool"
 
-<img src=./images/image7.png width="400" height="400">
+<img src=./images/image7.png width="600" height="400">
 
 5. The following queries can be used to query processed data:
 
