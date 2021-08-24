@@ -7,6 +7,8 @@
 - [Steps to run the code](#steps-to-run-the-code)
     - [Requirements](#requirements)
 - [Framework Functionality](#framework-functionality)
+  - [What has been achieved from 'points to achieve'](#what-has-been-achieved-from)
+  - [Workarounds for 'points to achieve'](#Workarounds-for-'points-to-achieve')
 - [Postgres Details](#postgres-details)
 - [Future work](#future-work)
 
@@ -122,6 +124,9 @@ Please navigate to [postgres details](#postgres-details) section to connect to d
 
 
 ## Framework Functionality
+
+### What has been achieved from 'points to achieve'
+
 This spark framework offers the following functionality which covers all the 'points to achieve' as following:
 - The framework has been created following OOPS concept and every process is set up as an object like Extract, Transform, Load etc, where each object has its own methods.
 - the data is repartitioned to a number of 100, which would ensure that non-blocking parallel procession ensures even as the cluster resources scale up.
@@ -134,10 +139,6 @@ This spark framework offers the following functionality which covers all the 'po
 - A data sanity check is done at the beginning after the extract phase, where a check is done on the count of records (count of records should be greater than 0), and the rows are checked for null values in any of the source columns. If null values are found , it is filtered out and loaded into a csv file to be inspected by developer
 - The target table(products) records are also inserted with a `record checksum` ,`update timestamp`, `p id` and `request id` so that the data available in products table can be used by other processes with ease
 
-
-Everything has been achieved from the 'points to achieve', there were instructions to include support for updating the products table based on `sku` as the primary key, `sku` has not been made the primary key as its always better to have a numeric as a primary key for ease of querying records and faster performance when dealing with upcoming huge future data. The workaround for this was to generate a surrogate key using zipwithuniqueid() function of rdd to generate surrogate values that do not have a chance of a collision as the data scales.
-
-
 Once the spark job is executed the logs can be seen with the following command
 ```
 docker exec spark-master more /opt/bitnami/spark/logs/spark.txt
@@ -147,6 +148,10 @@ If error records are found then they are written to the following location
 ```
 /opt/bitnami/spark/postman-assignment/error_records/error_records.csv
 ```
+
+### Workarounds for 'points to achieve'
+Everything has been achieved from the 'points to achieve', there were instructions to include support for updating the products table based on `sku` as the primary key, `sku` has not been made the primary key as its always better to have a numeric as a primary key for ease of querying records and faster performance when dealing with upcoming huge future data. The workaround for this was to generate a surrogate key using zipwithuniqueid() function of rdd to generate surrogate values that do not have a chance of a collision as the data scales.
+
 
 ## Postgres Details
 
@@ -225,3 +230,9 @@ If more time was available, the following could have been implemented
 - A more thorough data sanity check class and methods for source data
 - More detailed error handling framework
 - Would have worked on making the framework more source data agnostic, where the framework would be independent of source object and would work for any and all source objects with just change in the parameters of the config file.
+
+## Version of tools used
+- Python 3.6.14
+- Spark 3.1.2
+- Postgres 11
+- Pgadmin4
