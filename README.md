@@ -201,7 +201,7 @@ password: postman
 <img src=./images/image3.png width="400" height="400">
 <img src=./images/image4.png width="400" height="400">
 
-4. Once connected, navigate to the postman database as show , right click and choose "query tool"
+4. Once connected, navigate to the postman database as shown , right click and choose "query tool"
 
 <img src=./images/image7.png width="600" height="400">
 
