@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "postman",
+            "Group": "Server",
+            "Port": 5432,
+            "Username": "postgres",
+            "Host": 172.18.0.22,
+            "SSLMode": "prefer",
+            "MaintenanceDB": "postgres"
+        }
+    }
+}

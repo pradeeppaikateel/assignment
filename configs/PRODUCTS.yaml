@@ -1,0 +1,184 @@
+ingestion_interval: day
+sources:
+  - data_object: PRODUCTS
+    temp_view_name: PRODUCTS_View
+    source_type: local
+    path: /opt/bitnami/spark/postman-assignment/source_data/products.csv
+    options: header='True', inferSchema='True', delimiter=',',multiLine='True'
+    format: csv
+targets:
+  - dbtable: POSTMAN.PRODUCTS
+    write_mode: UPSERT
+    table_transformations: null
+    stat_cols:
+      - columns: ID
+      - columns: RqstSID
+    mapping:
+      - source_col_name: null
+        target_col_name: REQUEST_ID
+        target_col_type: string
+        transforms:
+          - type: custom_transform
+            name: generate_request_id
+      - source_col_name: null
+        target_col_name: DATAPAKID
+        target_col_type: decimal(9,0)
+        default_value: 1
+      - source_col_name: null
+        target_col_name: PARTNO
+        target_col_type: bigint
+        default_value: 1
+      - source_col_name: null
+        target_col_name: RECORD
+        target_col_type: bigint
+        default_value: 1
+      - source_col_name: null
+        target_col_name: RqstSID
+        target_col_type: string
+        transforms:
+          - type: custom_transform
+            name: generate_rqstsid
+      - source_col_name: ID
+        target_col_name: ID
+        target_col_type: string
+      - source_col_name: StartDate
+        target_col_name: StartDate
+        target_col_type: string
+      - source_col_name: EndDate
+        target_col_name: EndDate
+        target_col_type: string
+      - source_col_name: languageCode0
+        target_col_name: languageCode
+        target_col_type: string
+      - source_col_name: Name
+        target_col_name: Name
+        target_col_type: string
+      - source_col_name: Description
+        target_col_name: Description
+        target_col_type: string
+      - source_col_name: CompanyFinancialAccountingEntityID
+        target_col_name: CompanyFinancialAccountingEntityID
+        target_col_type: string
+      - source_col_name: HomeBusinessSystemID
+        target_col_name: HomeBusinessSystemID
+        target_col_type: string
+      - source_col_name: CostCentreTypeCode
+        target_col_name: CostCentreTypeCode
+        target_col_type: string
+      - source_col_name: AccountingBusinessAreaCode
+        target_col_name: AccountingBusinessAreaCode
+        target_col_type: string
+      - source_col_name: TaxJurisdictionCode
+        target_col_name: TaxJurisdictionCode
+        target_col_type: string
+      - source_col_name: ExpenseClassificationFunctionalAreaCode
+        target_col_name: ExpenseClassificationFunctionalAreaCode
+        target_col_type: string
+      - source_col_name: LONG_ExpenseClassificationFunctionalAreaCode
+        target_col_name: LONG_ExpenseClassificationFunctionalAreaCode
+        target_col_type: string
+      - source_col_name: CurrencyCode
+        target_col_name: CurrencyCode
+        target_col_type: string
+      - source_col_name: PostingUsageAllowedIndicator
+        target_col_name: PostingUsageAllowedIndicator
+        target_col_type: string
+      - source_col_name: SecondaryCostsPostingUsageAllowedIndicator
+        target_col_name: SecondaryCostsPostingUsageAllowedIndicator
+        target_col_type: string
+      - source_col_name: RevenuesPostingUsageAllowedIndicator
+        target_col_name: RevenuesPostingUsageAllowedIndicator
+        target_col_type: string
+      - source_col_name: CommitmentUpdateUsageAllowedIndicator
+        target_col_name: CommitmentUpdateUsageAllowedIndicator
+        target_col_type: string
+      - source_col_name: SecondaryCostsPlanningUsageAllowedIndicator
+        target_col_name: SecondaryCostsPlanningUsageAllowedIndicator
+        target_col_type: string
+      - source_col_name: RevenuesPlanningUsageAllowedIndicator
+        target_col_name: RevenuesPlanningUsageAllowedIndicator
+        target_col_type: string
+      - source_col_name: QuantityRequiredIndicator
+        target_col_name: QuantityRequiredIndicator
+        target_col_type: string
+      - source_col_name: DepartmentName
+        target_col_name: DepartmentName
+        target_col_type: string
+      - source_col_name: CostCenterReportPrinterDestinationCode
+        target_col_name: CostCenterReportPrinterDestinationCode
+        target_col_type: string
+      - source_col_name: CompanyLegalEntityID
+        target_col_name: CompanyLegalEntityID
+        target_col_type: string
+      - source_col_name: ProfitCentreID
+        target_col_name: ProfitCentreID
+        target_col_type: string
+      - source_col_name: UserAccountID
+        target_col_name: UserAccountID
+        target_col_type: string
+      - source_col_name: FormattedName
+        target_col_name: FormattedName
+        target_col_type: string
+      - source_col_name: FormOfAddressName
+        target_col_name: FormOfAddressName
+        target_col_type: string
+      - source_col_name: FirstLineName
+        target_col_name: FirstLineName
+        target_col_type: string
+      - source_col_name: SecondLineName
+        target_col_name: SecondLineName
+        target_col_type: string
+      - source_col_name: ThirdLineName
+        target_col_name: ThirdLineName
+        target_col_type: string
+      - source_col_name: FourthLineName
+        target_col_name: FourthLineName
+        target_col_type: string
+      - source_col_name: CountryCode
+        target_col_name: CountryCode
+        target_col_type: string
+      - source_col_name: RegionCode
+        target_col_name: RegionCode
+        target_col_type: string
+      - source_col_name: CityName
+        target_col_name: CityName
+        target_col_type: string
+      - source_col_name: DistrictName
+        target_col_name: DistrictName
+        target_col_type: string
+      - source_col_name: StreetPostalCode
+        target_col_name: StreetPostalCode
+        target_col_type: string
+      - source_col_name: StreetName
+        target_col_name: StreetName
+        target_col_type: string
+      - source_col_name: POBoxPostalCode
+        target_col_name: POBoxPostalCode
+        target_col_type: string
+      - source_col_name: POBoxID
+        target_col_name: POBoxID
+        target_col_type: string
+      - source_col_name: CorrespondenceLanguageCode
+        target_col_name: CorrespondenceLanguageCode
+        target_col_type: string
+      - source_col_name: FirstTelephoneNumberDescription
+        target_col_name: FirstTelephoneNumberDescription
+        target_col_type: string
+      - source_col_name: SecondTelephoneNumberDescription
+        target_col_name: SecondTelephoneNumberDescription
+        target_col_type: string
+      - source_col_name: TeleboxNumberDescription
+        target_col_name: TeleboxNumberDescription
+        target_col_type: string
+      - source_col_name: FacsimileNumberDescription
+        target_col_name: FacsimileNumberDescription
+        target_col_type: string
+      - source_col_name: TeletexNumberDescription
+        target_col_name: TeletexNumberDescription
+        target_col_type: string
+      - source_col_name: TelexNumberDescription
+        target_col_name: TelexNumberDescription
+        target_col_type: string
+      - source_col_name: DataCommunicationLineNumberDescription
+        target_col_name: DataCommunicationLineNumberDescription
+        target_col_type: string
