@@ -75,7 +75,7 @@ class PostgreSql:
                 sql2 = '''CREATE TABLE IF NOT EXISTS products_agg( 
                         p_id bigint primary key,
                         name varchar(70) unique not null,
-                        count integer not null,
+                        "no. of products" integer not null,
                         updt_tmstmp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                         ) ;'''
                 cursor.execute(sql2)
@@ -175,7 +175,7 @@ class PostgreSql:
                 VALUES({row.p_id}, '{row.name}',{row.count_of_names}) 
                 ON CONFLICT (name) 
                 DO 
-                UPDATE SET count = '{row.count_of_names}', updt_tmstmp = current_timestamp ;'''
+                UPDATE SET "no. of products" = '{row.count_of_names}', updt_tmstmp = current_timestamp ;'''
                 cursor.execute(sql)
 
             connection.commit()
