@@ -109,11 +109,11 @@ count of records in products_agg: 212645
 ```
 sample 10 rows from products table:
 
-<img src=./images/image5.png width="600" height="400">
+<img src=./images/image5.png width="900" height="400">
 
 sample 10 rows from products_agg table:
 
-<img src=./images/image6.png width="600" height="400">
+<img src=./images/image6.png width="700" height="400">
 
 
 
