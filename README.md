@@ -117,7 +117,7 @@ sample 10 rows from products_agg table:
 
 <img src=./images/image6.png width="700" height="400">
 
-Please navigate to postgres details section to connect to database and query/check data
+Please navigate to [postgres details](#postgres-details) section to connect to database and query/check data
 
 
 
