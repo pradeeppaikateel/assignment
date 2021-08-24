@@ -217,7 +217,7 @@ SELECT name, "no. of products" FROM postman.public.products_agg;
 ```
 
 ## Future work
-If I was given more time, I would have implemented the following in a better manner
+If more time was available, the following could have been implemented
 - A more thorough data sanity check class and methods for source data
-- A better error handling framework
-- Would have worked on making the framework more source data agnostic. Due to shortage in time I could not build a generic framework which is what would be ideal, where the framework would be independent of source object and would work for any and all source objects with just change in the parameters of the config file.
+- More detailed error handling framework
+- Would have worked on making the framework more source data agnostic, where the framework would be independent of source object and would work for any and all source objects with just change in the parameters of the config file.
