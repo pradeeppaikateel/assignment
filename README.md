@@ -143,8 +143,9 @@ http://localhost:5050/
 emailid: postman@sample.com
 password: postman
 ```
-<img src=./images/image2.png width="400" height="400">
+<img src=./images/image2.png width="400" height="600">
 3. Once logged in, connect to new server with following details:
+
 ```
 "name": postman
 "user": postgres,
@@ -153,6 +154,6 @@ password: postman
 "port": 5432,
 ```
 
-<img src=./images/image1.png width="400" height="400">
+<img src=./images/image1.png width="400" height="600">
 <img src=./images/image3.png width="400" height="400">
 <img src=./images/image4.png width="400" height="400">
