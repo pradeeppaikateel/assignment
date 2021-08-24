@@ -28,7 +28,7 @@ target table treating `sku` like a primary key i.e only one record of a `sku` va
   necessarily imply that column `sku` should be made the primary key in the table
   
 ##Folder Structure
-### A typical top-level directory layout
+A typical top-level directory layout
 
     .
     ├── configs                 # config files
