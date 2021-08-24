@@ -12,12 +12,12 @@
 
 ## Introduction
 The instruction given in the assignment was to build a non-blocking parallel processing ETL pipeline that would ingest
-data from a .csv file, process the data and load to a database table, following which the the data from the products
+data from a .csv file, process the data and load to a database table, following which the data from the products
 table needs to be aggregated and further inserted into another table. I have used dockerised **Spark**, with scripts written in 
 pyspark, as my ETL tool and have used Postgres as the target database.  
 
 Following were the points to achieve
-- Code should follow concept of OOPS
+- Code should follow the concept of OOPS
 - Support for regular non-blocking parallel ingestion of the given file into a table. Consider thinking about the scale 
   of what should happen if the file is to be processed in 2 minutes.
 - Support for updating existing products in the table based on `sku` as the primary key.
@@ -27,7 +27,7 @@ Following were the points to achieve
 Assumptions made during the development of the ETL framework are as follows :
 - No column was provided with input data in products.csv that would allow one to identify the latest update record for a
   particular `sku` value, thus a `request_id` column has been derived in spark, which is a concatenation of timestamp 
-  and row number. The assumption that is made that every data that is input would natively have its own timestamp based 
+  and row number. The assumption that is made is that every data that is input would natively have its own timestamp based 
   on which you can filter out only the latest values.
 - One of the other assumptions or inferences that has been made is that it's been expected that update should happen on
 target table treating `sku` like a primary key i.e only one record of a `sku` value can exist, but this does not 
@@ -62,7 +62,7 @@ root/
  
 ```
 
-The main Python module containing the ETL job (which will be sent to the Spark cluster), is `jobs/etl_job.py`. Any external configuration parameters required by etl_job.py are stored in yaml format in `configs/PRODUCTS.yaml` . Additional modules that support this job are kept in the dependencies' folder. In the project's root I have included new.bat, which is a batch script to build the docker images. Requirements.txt file contains all the additional modules thats needed by pyspark like `psycopg2` and `PyYAML`
+The main Python module containing the ETL job (which will be sent to the Spark cluster), is `jobs/etl_job.py`. Any external configuration parameters required by etl_job.py are stored in yaml format in `configs/PRODUCTS.yaml` . Additional modules that support this job are kept in the dependencies folder. In the project's root I have included new.bat, which is a batch script to build the docker images. Requirements.txt file contains all the additional modules thats needed by pyspark like `psycopg2` and `PyYAML`
 
 
 ## Steps to run the code
@@ -102,7 +102,7 @@ docker run -p 5050:80 --volume=pgadmin4:/var/lib/pgadmin -e PGADMIN_DEFAULT_EMAI
 ```
 docker exec spark-master spark-submit --master spark://spark:7077 --py-files /opt/bitnami/spark/postman-assignment/code.zip /opt/bitnami/spark/postman-assignment/jobs/etl_job.py --source=PRODUCTS --env=dev --job_run_date=2021-08-07T02:00:00+00:00
 ```
-On execution of the above job, the products and products_agg table will have following count of records:
+On execution of the above job, the products and products_agg table will have following the count of records:
 ```
 count of records in products: 466693
 count of records in products_agg: 212645
@@ -127,11 +127,11 @@ This spark framework offers the following functionality which covers all the 'po
 - Truncation of data does not happen in any of the loading process
 - A logger module is implemented which keeps a log of the ETL process (details given later)
 - Error handling has been implmented to raise meaningful errors
-- A data sanity check is done at the beginning after the extract phase, where a check is done on the count of records (count of records should be greater than 0), and the rows are checked null values in any of the source columns. If null values are found , it is filtered out and loaded into a csv file to be inspected by developer/support 
+- A data sanity check is done at the beginning after the extract phase, where a check is done on the count of records (count of records should be greater than 0), and the rows are checked for null values in any of the source columns. If null values are found , it is filtered out and loaded into a csv file to be inspected by developer
 - The target table(products) records are also inserted with a `record checksum` ,`update timestamp`, `p id` and `request id` so that the data available in products table can be used by other processes with ease
 
 
-Everything has been achived from the 'points to achieve', there were instructions to include support for updating the products table based on `sku` as the primary key, sku has not been made the primary key as its always better to have a numeric as a primary key for ease of querying records and faster performance when dealing with upcoming huge future data. The workaround for this was to generate a surrogate key using zipwithuniqueid() function of rdd to generate surrogate values that do not have a chance of collision as the data scales.
+Everything has been achieved from the 'points to achieve', there were instructions to include support for updating the products table based on `sku` as the primary key, `sku` has not been made the primary key as its always better to have a numeric as a primary key for ease of querying records and faster performance when dealing with upcoming huge future data. The workaround for this was to generate a surrogate key using zipwithuniqueid() function of rdd to generate surrogate values that do not have a chance of a collision as the data scales.
 
 
 Once the spark job is executed the logs can be seen with the following command
