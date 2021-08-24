@@ -1,13 +1,14 @@
 # Postman Assignment
  Assignment for data engineer role at Postman India,
  
-##Table of content
+## Table of content
 - [Introduction](#introduction)
 - [Folder Structure](#folder-structure)
 - [Steps to run the code](#steps-to-run-the-code)
     - [Requirements](#requirements)
 - [Framework Functionality](#framework-functionality)
 - [Postgres Details](#postgres-details)
+- [Future work](#future-work)
 
 ## Introduction
 The instruction given in the assignment was to build a non-blocking parallel processing ETL pipeline that would ingest
@@ -32,7 +33,7 @@ Assumptions made during the development of the ETL framework are as follows :
 target table treating `sku` like a primary key i.e only one record of a `sku` value can exist, but this does not 
   necessarily imply that column `sku` should be made the primary key in the table
   
-##Folder Structure
+## Folder Structure
 A typical top-level directory layout
 ```
 root/
@@ -66,7 +67,7 @@ The main Python module containing the ETL job (which will be sent to the Spark c
 
 ## Steps to run the code
 There are three containers in total that host the whole framework on docker. Each for spark, postgresql and pgadmin4.
-###Requirements 
+### Requirements 
 - Docker
 - Docker Compose
 - Git
@@ -143,7 +144,7 @@ If error records are found then they are written to the following location
 /opt/bitnami/spark/postman-assignment/error_records/error_records.csv
 ```
 
-##Postgres Details
+## Postgres Details
 
 Two tables are created/used , the `products` table and `products_agg` table
 
