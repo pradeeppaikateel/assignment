@@ -78,10 +78,15 @@ docker run -p 5050:80 --volume=pgadmin4:/var/lib/pgadmin -e PGADMIN_DEFAULT_EMAI
 ```
 docker exec spark-master spark-submit --master spark://spark:7077 --py-files /opt/bitnami/spark/postman-assignment/code.zip /opt/bitnami/spark/postman-assignment/jobs/etl_job.py --source=PRODUCTS --env=dev --job_run_date=2021-08-07T02:00:00+00:00
 ```
+On execution of the above job, the products and products_agg tale will have following count of records:
+```
+count of records in products: 466693
+count of records in products_agg: 
+```
 
 ## Framework Functionality
 This spark framework offers the following functionality which covers all the 'points to achieve' as following:
-- The framework has been created following OOPS concept and every process is set up as an object like Extract, Transform, Load etc, where each objects has its own methods.
+- The framework has been created following OOPS concept and every process is set up as an object like Extract, Transform, Load etc, where each object has its own methods.
 - the data is repartitioned to a number of 200, which would ensure that non-blocking parallel procession ensures even as the cluster resources scale up.
 - Loading of data into the target table happens using the Upsert functionality treating `sku` as the conflict key, wherein if a record with said `sku` does not exist then it is inserted into target table, and if it does then the other columns are updated.
 - All product details are ingested to a single table called as products in database postman.
@@ -122,6 +127,10 @@ record_checksum varchar(45) not null,
 updt_tmstmp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 ```
+drop script
+```
+DROP TABLE public.products;
+```
 products_agg table:
 ```
 CREATE TABLE IF NOT EXISTS products_agg( 
@@ -131,7 +140,10 @@ name varchar(70) unique not null,
 updt_tmstmp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) 
 ```
-
+drop script
+```
+DROP TABLE public.products_agg;
+```
 Details on how to connect to the Postgres server using pgadmin is given below:
 
 1. Go to a browser and connect to :

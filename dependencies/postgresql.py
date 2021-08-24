@@ -171,7 +171,7 @@ class PostgreSql:
             cursor = connection.cursor()
 
             for row in partition:
-                sql = f'''INSERT INTO products_agg (p_id, name, count)
+                sql = f'''INSERT INTO products_agg (p_id, name, "no. of products")
                 VALUES({row.p_id}, '{row.name}',{row.count_of_names}) 
                 ON CONFLICT (name) 
                 DO 

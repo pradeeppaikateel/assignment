@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2e6e6967-bd5d-4233-96b6-35c94e4a8de3" name="Default Changelist" comment="updates">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code.zip" beforeDir="false" afterPath="$PROJECT_DIR$/code.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencies/postgresql.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies/postgresql.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
