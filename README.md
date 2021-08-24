@@ -11,6 +11,7 @@
   - [Workarounds for 'points to achieve'](#Workarounds-for-points-to-achieve)
 - [Postgres Details](#postgres-details)
 - [Future work](#future-work)
+- [Version of tools used](#Version-of-tools-used)
 
 ## Introduction
 The instruction given in the assignment was to build a non-blocking parallel processing ETL pipeline that would ingest
