@@ -155,4 +155,4 @@ password: postman
 ![plot](./images/image1.png)
 ![plot](./images/image3.png)
 ![plot](./images/image4.png )
-<img src=./images/image4.png width="300" height="300">
+<img src=./images/image4.png width="400" height="400">
