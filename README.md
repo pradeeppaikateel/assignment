@@ -9,7 +9,7 @@
 - [Framework Functionality](#framework-functionality)
   - [What has been achieved from 'points to achieve'](#What-has-been-achieved-from-points-to-achieve)
   - [Workarounds for 'points to achieve'](#Workarounds-for-points-to-achieve)
-- [Postgres Details](#postgres-details)
+- [Postgres Details](#postgres-tables-details)
 - [Future work](#future-work)
 - [Version of tools used](#Version-of-tools-used)
 
@@ -107,20 +107,6 @@ docker run -p 5050:80 --volume=pgadmin4:/var/lib/pgadmin -e PGADMIN_DEFAULT_EMAI
 ```
 docker exec spark-master spark-submit --master spark://spark:7077 --py-files /opt/bitnami/spark/postman-assignment/code.zip /opt/bitnami/spark/postman-assignment/jobs/etl_job.py --source=PRODUCTS --env=dev --job_run_date=2021-08-07T02:00:00+00:00
 ```
-On execution of the above job, the products and products_agg table will have following the count of records:
-```
-count of records in products: 466693
-count of records in products_agg: 212645
-```
-sample 10 rows from products table:
-
-<img src=./images/image5.png width="900" height="400">
-
-sample 10 rows from products_agg table:
-
-<img src=./images/image6.png width="700" height="400">
-
-Please navigate to [postgres details](#postgres-details) section to connect to database and query/check data
 
 
 
@@ -140,6 +126,22 @@ This spark framework offers the following functionality which covers all the 'po
 - A data sanity check is done at the beginning after the extract phase, where a check is done on the count of records (count of records should be greater than 0), and the rows are checked for null values in any of the source columns. If null values are found , it is filtered out and loaded into a csv file to be inspected by developer
 - The target table(products) records are also inserted with a `record checksum` ,`update timestamp`, `p id` and `request id` so that the data available in products table can be used by other processes with ease
 
+On execution of the above job, the products and products_agg table will have following the count of records:
+```
+count of records in products: 466693
+count of records in products_agg: 212645
+```
+sample 10 rows from products table:
+
+<img src=./images/image5.png width="900" height="400">
+
+sample 10 rows from products_agg table:
+
+<img src=./images/image6.png width="700" height="400">
+
+Please navigate to [postgres details](#postgres-tables-details) section to connect to database and query/check data
+
+
 Once the spark job is executed the logs can be seen with the following command
 ```
 docker exec spark-master more /opt/bitnami/spark/logs/spark.txt
@@ -154,7 +156,7 @@ If error records are found then they are written to the following location
 Everything has been achieved from the 'points to achieve', there were instructions to include support for updating the products table based on `sku` as the primary key, `sku` has not been made the primary key as its always better to have a numeric as a primary key for ease of querying records and faster performance when dealing with upcoming huge future data. The workaround for this was to generate a surrogate key using zipwithuniqueid() function of rdd to generate surrogate values that do not have a chance of a collision as the data scales.
 
 
-## Postgres Details
+## Postgres Tables Details
 
 Two tables are created/used , the `products` table and `products_agg` table
 
