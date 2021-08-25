@@ -71,7 +71,7 @@ The main Python module containing the ETL job (which will be sent to the Spark c
 
 
 ## Steps to run the code
-There are three containers in total that host the whole framework on docker. Each for spark, postgresql and pgadmin4.
+There are three containers in total that host the whole framework on docker. Each for spark, postgresql and pgadmin4. The spark configuration is run as with one master and 3 workers all running on bitnami/spark images to simulate a cluster
 ### Requirements 
 - Docker
 - Docker Compose
