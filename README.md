@@ -126,7 +126,7 @@ This spark framework offers the following functionality which covers all the 'po
 - A data sanity check is done at the beginning after the extract phase, where a check is done on the count of records (count of records should be greater than 0), and the rows are checked for null values in any of the source columns. If null values are found , it is filtered out and loaded into a csv file to be inspected by developer
 - The target table(products) records are also inserted with a `record checksum` ,`update timestamp`, `p id` and `request id` so that the data available in products table can be used by other processes with ease
 
-On execution of the above job, the products and products_agg table will have following the count of records:
+On execution of the pyspark job, the products and products_agg table will have following the count of records:
 ```
 count of records in products: 466693
 count of records in products_agg: 212645
