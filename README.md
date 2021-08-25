@@ -9,8 +9,8 @@
 - [Framework Functionality](#framework-functionality)
   - [What has been achieved from 'points to achieve'](#What-has-been-achieved-from-points-to-achieve)
   - [Workarounds for 'points to achieve'](#Workarounds-for-points-to-achieve)
-- [Postgres Details](#postgres-tables-details)
-- [Future work](#future-work)
+- [Postgres Table Details with Schema](#postgres-tables-details)
+- [Future work-What would you improve if given more days](#future-work)
 - [Version of tools used](#Version-of-tools-used)
 
 ## Introduction
