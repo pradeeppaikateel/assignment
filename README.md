@@ -1,6 +1,4 @@
-# Postman Assignment
- Assignment for data engineer role at Postman India
- 
+
 ## Table of content
 - [Introduction](#introduction)
 - [Folder Structure](#folder-structure)
@@ -14,14 +12,14 @@
 - [Version of tools used](#Version-of-tools-used)
 
 ## Introduction
-The instruction given in the assignment was to build a non-blocking parallel processing ETL pipeline that would ingest
+The intention of this project is to build a non-blocking parallel processing ETL pipeline that would ingest
 data from a .csv file, process the data and load to a database table, following which the data from the products
 table needs to be aggregated and further inserted into another table. I have used dockerised **Spark**, with scripts written in 
 pyspark, as my ETL tool and have used Postgres as the target database.  
 
 <img src=./images/image8.png width="700" height="400">
 
-Following were the points to achieve
+Following were the points intended to achieve
 - Code should follow the concept of OOPS
 - Support for regular non-blocking parallel ingestion of the given file into a table. Consider thinking about the scale 
   of what should happen if the file is to be processed in 2 minutes.
